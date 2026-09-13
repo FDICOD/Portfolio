@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4x4 Hybrid Logic Array Multiplier — Muhammad Fadi S</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        :root {
+            --parchment: #f4f1ea;
+            --espresso: #1a0f0a;
+            --crimson: #a91d22;
+            --peach: #fbcbbb; 
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--espresso);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .bg-parchment { background-color: var(--parchment); }
+        .bg-espresso { background-color: var(--espresso); }
+        .bg-crimson { background-color: var(--crimson); }
+        .bg-peach { background-color: var(--peach); }
+        
+        .border-espresso { border-color: var(--espresso); }
+        .text-espresso { color: var(--espresso); }
+        .text-crimson { color: var(--crimson); }
+        .text-parchment { color: var(--parchment); }
+        .text-peach { color: var(--peach); }
+
+        a, button {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .duotone {
+            transition: all 0.3s ease;
+        }
+        .duotone:hover {
+            opacity: 0.95;
+        }
+
+        /* Prevent background scroll when modal is open */
+        body.modal-open {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-parchment text-espresso select-text">
+
+    <!-- Top Minimal Bar -->
+    <header class="sticky top-0 z-40 border-b-2 border-espresso bg-parchment">
+        <div class="max-w-7xl mx-auto flex items-stretch justify-between px-6 sm:px-12">
+            <a 
+                href="../index.html#projects" 
+                onclick="if (history.length > 1) { history.back(); return false; }" 
+                class="flex items-center py-4 font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-crimson hover:underline"
+            >
+                ← Go Back
+            </a>
+            <span class="flex items-center font-mono text-[11px] tracking-[0.15em] uppercase text-espresso/50">
+                01 / Selected Work
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-12 py-12 sm:py-16 space-y-16 bg-parchment">
+        
+        <!-- Header & Quick Metadata -->
+        <section class="space-y-6">
+            <h1 class="font-sans font-black tracking-tight text-espresso uppercase text-[clamp(36px,5.5vw,68px)] leading-[1.02]">
+                4x4 Hybrid Logic Array Multiplier
+            </h1>
+
+            <p class="max-w-4xl text-[18px] leading-relaxed text-espresso/80 font-normal">
+                A full custom 4x4 unsigned array multiplier designed transistor by transistor in Cadence Virtuoso, using a hybrid Transmission Gate and Pass Transistor Logic full adder to cut transistor count while keeping full voltage swing at every node.
+            </p>
+
+            <!-- Inline Meta Row -->
+            <div class="pt-6 border-t border-espresso/20 grid grid-cols-2 sm:grid-cols-4 gap-6 font-mono text-xs">
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Full Adder</span>
+                    <span class="font-bold text-base text-espresso">18T vs 28T CMOS</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Team</span>
+                    <span class="font-bold text-base text-espresso">4 Members</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Verification</span>
+                    <span class="font-bold text-base text-espresso">DRC + LVS Clean</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Process</span>
+                    <span class="font-bold text-base text-espresso">180nm gpdk180</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Primary Hero Visual: Top-Level Schematic -->
+        <section class="space-y-3 flex flex-col items-center">
+            <img 
+                src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/schematic.png" 
+                alt="Top level multiplier assembled from AND, Half Adder, and Full Adder cells in Cadence Virtuoso" 
+                onclick="openLightbox(this.src, this.alt)"
+                class="block max-h-[520px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+            />
+            <p class="w-full font-mono text-[11px] text-espresso/60 tracking-wide text-center">
+                Fig 1. Top level multiplier assembled from AND, Half Adder, and Full Adder cells in Cadence Virtuoso.
+            </p>
+        </section>
+
+        <!-- Concise Content: Context & Approach -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Context &amp; Objective</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    This was a group project for a VLSI course, built with three other members. The goal was to take a 4x4 unsigned array multiplier through a complete full custom design flow in Cadence Virtuoso, from transistor level schematics to a physically verified layout. I've always been interested in art, and naturally, took care of the layout designs for all modules.
+                </p>
+                <p>
+                    Rather than using standard static CMOS adders, the design combines Transmission Gate Logic for full swing signal transfer with Pass Transistor Logic for compact carry generation. The result is a hybrid full adder built from 18 transistors instead of the usual 28, based on a structure adapted from a design proposed by Sadeghi et al.
+                </p>
+            </div>
+        </section>
+
+        <!-- Submodule Schematics and Layouts Grid (3 Rows x 2 Columns + 1 Center Row) -->
+        <section class="space-y-12 pt-4">
+            
+            <!-- Row 1: AND Gate -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div class="flex flex-col items-center space-y-3">
+                    <img 
+                        src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/ANDschematic.png" 
+                        alt="AND Gate Schematic" 
+                        onclick="openLightbox(this.src, this.alt)"
+                        class="block max-h-[260px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                    />
+                    <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                        AND Gate Schematic
+                    </span>
+                </div>
+                <div class="flex flex-col items-center space-y-3">
+                    <img 
+                        src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/ANDlayout.png" 
+                        alt="AND Gate Layout" 
+                        onclick="openLightbox(this.src, this.alt)"
+                        class="block max-h-[260px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                    />
+                    <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                        AND Gate Layout (DRC &amp; LVS Clean)
+                    </span>
+                </div>
+            </div>
+
+            <!-- Row 2: Half Adder -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div class="flex flex-col items-center space-y-3">
+                    <img 
+                        src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/HAschematic.png" 
+                        alt="Half Adder Schematic" 
+                        onclick="openLightbox(this.src, this.alt)"
+                        class="block max-h-[260px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                    />
+                    <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                        Half Adder Schematic
+                    </span>
+                </div>
+                <div class="flex flex-col items-center space-y-3">
+                    <img 
+                        src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/HAlayout.png" 
+                        alt="Half Adder Layout" 
+                        onclick="openLightbox(this.src, this.alt)"
+                        class="block max-h-[260px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                    />
+                    <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                        Half Adder Layout (DRC &amp; LVS Clean)
+                    </span>
+                </div>
+            </div>
+
+            <!-- Row 3: Full Adder -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                <div class="flex flex-col items-center space-y-3">
+                    <img 
+                        src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/FAschematic.png" 
+                        alt="Hybrid 18T Full Adder Schematic" 
+                        onclick="openLightbox(this.src, this.alt)"
+                        class="block max-h-[260px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                    />
+                    <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                        Hybrid Full Adder Schematic
+                    </span>
+                </div>
+                <div class="flex flex-col items-center space-y-3">
+                    <img 
+                        src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/FAlayout.png" 
+                        alt="Hybrid 18T Full Adder Layout" 
+                        onclick="openLightbox(this.src, this.alt)"
+                        class="block max-h-[260px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                    />
+                    <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                        Hybrid Full Adder Custom Layout
+                    </span>
+                </div>
+            </div>
+
+            <!-- Row 4: Top Module Layout (Centered) -->
+            <div class="flex flex-col items-center space-y-3 pt-4">
+                <img 
+                    src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/toplayout.png" 
+                    alt="Top Level 4x4 Multiplier Layout with Complete DRC & LVS Clean Matching" 
+                    onclick="openLightbox(this.src, this.alt)"
+                    class="block max-h-[360px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                />
+                <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                    Top Level Layout
+                </span>
+            </div>
+
+        </section>
+
+        <!-- Key Takeaways -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Key Insights</h2>
+            </div>
+            <div class="md:col-span-8 space-y-6">
+                <div>
+                    <h3 class="font-sans font-bold text-espresso text-lg">Building Up From First Principles</h3>
+                    <p class="mt-1 text-[15px] leading-relaxed text-espresso/80">
+                        Each building block, the AND gate, the half adder Sum and Carry paths, and the three module full adder, was designed and simulated on its own before being turned into a schematic symbol and reused hierarchically across the full 4x4 array.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-sans font-bold text-espresso text-lg">Layout, DRC, LVS, Extraction</h3>
+                    <p class="mt-1 text-[15px] leading-relaxed text-espresso/80">
+                        Every cell was laid out by hand in gpdk180, passed DRC with zero violations and LVS with a clean match, and the top level layout went through RC parasitic extraction in Quantus to confirm the multiplier still worked correctly with real interconnect delay included.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clean Bottom Navigation -->
+        <nav class="pt-8 border-t-2 border-espresso flex justify-between items-center font-mono text-xs tracking-wider">
+            <a 
+                href="../index.html#projects" 
+                class="text-crimson font-bold uppercase hover:underline"
+            >
+                ← All Projects
+            </a>
+            <a href="hotspot-detection.html" class="text-espresso font-bold uppercase hover:text-crimson">
+                Next: Voltage Controlled Oscillator →
+            </a>
+        </nav>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-espresso bg-espresso text-parchment py-8 px-6 font-mono text-xs tracking-wider">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-parchment/60">&copy; 2026 Muhammad Fadi S.</span>
+            <div class="flex gap-6">
+                <a href="mailto:muhammadfadis248@gmail.com" class="hover:text-peach underline">Email</a>
+                <a href="https://github.com/fdicod" target="_blank" class="hover:text-peach underline">GitHub</a>
+                <a href="https://linkedin.com/in/muhammadfadis" target="_blank" class="hover:text-peach underline">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fullscreen Dark Modal / Lightbox -->
+    <div 
+        id="lightbox-modal" 
+        onclick="handleBackdropClick(event)"
+        class="fixed inset-0 z-50 hidden bg-neutral-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 sm:p-8"
+        role="dialog" 
+        aria-modal="true"
+    >
+        <!-- Close Button (Cross Icon) -->
+        <button 
+            type="button" 
+            onclick="closeLightbox()" 
+            class="absolute top-5 right-5 text-neutral-400 hover:text-white p-2 rounded-full hover:bg-neutral-800 focus:outline-none transition-colors"
+            aria-label="Close image modal"
+        >
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <!-- Lightbox Content Container -->
+        <div class="relative max-w-6xl max-h-[85vh] flex flex-col items-center">
+            <img 
+                id="lightbox-img" 
+                src="" 
+                alt="" 
+                class="max-w-full max-h-[75vh] w-auto h-auto object-contain rounded shadow-2xl border border-neutral-700" 
+            />
+            <p id="lightbox-caption" class="mt-4 font-mono text-xs text-neutral-300 tracking-wider text-center max-w-2xl px-4"></p>
+        </div>
+    </div>
+
+    <!-- Lightbox Logic -->
+    <script>
+        const modal = document.getElementById('lightbox-modal');
+        const modalImg = document.getElementById('lightbox-img');
+        const modalCaption = document.getElementById('lightbox-caption');
+
+        function openLightbox(src, alt) {
+            modalImg.src = src;
+            modalImg.alt = alt;
+            modalCaption.textContent = alt;
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            document.addEventListener('keydown', handleEscKey);
+        }
+
+        function closeLightbox() {
+            modal.classList.add('hidden');
+            modalImg.src = '';
+            document.body.classList.remove('modal-open');
+            document.removeEventListener('keydown', handleEscKey);
+        }
+
+        function handleBackdropClick(event) {
+            if (event.target === modal) {
+                closeLightbox();
+            }
+        }
+
+        function handleEscKey(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        }
+    </script>
+
+</body>
+</html>

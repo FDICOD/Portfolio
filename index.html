@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muhammad Fadi S Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Custom Theme Design Palette Definitions */
+        :root {
+            --parchment: #f4f1ea;
+            --espresso: #1a0f0a;
+            --crimson: #a91d22;
+            --peach: #fbcbbb; 
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--espresso);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Explicit utilities since they map to custom Tailwind theme tags */
+        .bg-parchment { background-color: var(--parchment); }
+        .bg-espresso { background-color: var(--espresso); }
+        .bg-crimson { background-color: var(--crimson); }
+        .bg-peach { background-color: var(--peach); }
+        
+        .border-espresso { border-color: var(--espresso); }
+        .text-espresso { color: var(--espresso); }
+        .text-crimson { color: var(--crimson); }
+        .text-parchment { color: var(--parchment); }
+        .text-peach { color: var(--peach); }
+
+        /* Smooth UI interactive transition rules */
+        a, button {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Nav Links hover: background fills with dark espresso, text turns to light peach */
+        nav a:not(.bg-espresso):hover {
+            background-color: var(--espresso) !important;
+            color: var(--peach) !important;
+        }
+
+        /* Hero text layout links (Email, Github, LinkedIn): highlight text on hover */
+        dd a:hover {
+            color: var(--crimson) !important;
+        }
+
+        /* Images look natural by default, fade slightly on hover */
+        .duotone {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        article:hover .duotone, aside:hover .duotone {
+            opacity: 0.85;
+            transform: scale(1.01);
+        }
+
+        /* Contact Section social links layout hovers */
+        #contact a:hover {
+            color: var(--peach) !important;
+        }
+
+        /* Hero sidebar rows smooth color shift on hover */
+        dl div, dl a {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        dl div:hover, dl a:hover {
+            background-color: var(--crimson) !important;
+        }
+        dl div:hover dt, dl a:hover dt {
+            color: var(--peach) !important;
+        }
+        dl div:hover dd, dl div:hover dd a, dl a:hover dd {
+            color: var(--peach) !important;
+        }
+
+        /* Project Middle Box Active Warm Orange/Amber Hover State */
+        .project-middle {
+            transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .project-link:hover .project-middle {
+            background-color: #ecd2be !important; /* Slightly darker warm amber tone */
+        }
+        .project-arrow {
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .project-link:hover .project-arrow {
+            transform: translateX(6px);
+        }
+
+        /* Softened section label header bars global design rules */
+        section > div.grid.grid-cols-1.border-b-2.border-espresso {
+            background-color: transparent !important;
+            border-top: 1px solid rgba(26, 15, 10, 0.15);
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Set section title headings to crisp theme Espresso */
+        section > div.grid.grid-cols-1.border-b-2.border-espresso h2 {
+            color: var(--espresso) !important;
+            font-size: 13px;
+            letter-spacing: 0.2em;
+        }
+
+        /* Set the right hand side tags to a muted, elegant crimson tone */
+        section > div.grid.grid-cols-1.border-b-2.border-espresso span {
+            color: var(--crimson) !important;
+            opacity: 0.8;
+            font-size: 11px;
+        }
+
+        /* Keeps the internal vertical line gone completely */
+        section > div.grid.grid-cols-1.border-b-2.border-espresso div.border-espresso {
+            border-right-width: 0px !important;
+        }
+
+        /* Adds a safety cushion above anchor sections so the sticky nav doesn't cover headings */
+        section {
+            scroll-margin-top: 40px;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-parchment text-espresso select-text">
+
+    <header class="sticky top-0 z-50 border-b-2 border-espresso bg-parchment">
+        <div class="flex items-stretch justify-end">
+            <nav class="hidden md:flex">
+                <a href="#skills" class="flex items-center border-l border-espresso px-5 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase transition-colors">Skills</a>
+                <a href="#projects" class="flex items-center border-l border-espresso px-5 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase transition-colors">Projects</a>
+                <a href="#experience" class="flex items-center border-l border-espresso px-5 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase transition-colors">Experience</a>
+                <a href="#about" class="flex items-center border-l border-espresso px-5 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase transition-colors">About</a>
+                <a href="#contact" class="flex items-center border-l-2 border-espresso bg-espresso px-5 py-3 font-mono text-[11px] font-bold tracking-[0.2em] text-peach uppercase transition-colors hover:bg-crimson hover:text-parchment">Get in touch</a>
+            </nav>
+
+            <button type="button" onclick="toggleMenu()" id="menu-btn" class="border-l border-espresso px-5 font-mono text-[11px] font-bold tracking-[0.2em] uppercase md:hidden">
+                Menu
+            </button>
+        </div>
+
+        <nav id="mobile-nav" class="hidden border-t-2 border-espresso md:hidden bg-parchment">
+            <a href="#skills" onclick="toggleMenu()" class="block border-b border-espresso px-4 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase">Skills</a>
+            <a href="#projects" onclick="toggleMenu()" class="block border-b border-espresso px-4 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase">Projects</a>
+            <a href="#experience" onclick="toggleMenu()" class="block border-b border-espresso px-4 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase">Experience</a>
+            <a href="#about" onclick="toggleMenu()" class="block border-b border-espresso px-4 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase">About</a>
+            <a href="#contact" onclick="toggleMenu()" class="block border-b border-espresso px-4 py-3 font-mono text-[11px] font-bold tracking-[0.2em] uppercase">Contact</a>
+        </nav>
+    </header>
+
+    <main class="min-h-screen bg-parchment">
+        
+        <section id="top" class="border-b-2 border-espresso">
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                <div class="flex flex-col border-espresso lg:col-span-7 lg:border-r-2">
+                    <div class="p-6 pt-0 sm:p-10 sm:pt-0 lg:p-14 lg:pt-0 mt-35">
+                        <p class="mb-6 font-mono text-[11px] font-bold tracking-[0.3em] text-crimson uppercase">
+                            Electronics &amp; Communication Engineer
+                        </p>
+                        <h1 class="font-sans font-black tracking-[-0.04em] text-espresso uppercase leading-[0.92] text-[clamp(48px,10vw,120px)]">
+                            Muhammad<br />Fadi S
+                        </h1>
+                        <div class="mt-8 font-sans font-extrabold tracking-tight text-espresso leading-[1.05] text-[clamp(22px,4.5vw,46px)]">
+                            <p>Analog IC Design · Embedded</p>
+                            <p class="text-crimson"> CMOS & Advanced Logic · Avionics</p>
+                        </div>
+                        <div class="mt-7 h-1 w-[120px] bg-crimson" aria-hidden="true"></div>
+                        <p class="mt-7 max-w-xl text-[15px] leading-relaxed text-espresso/80">
+                            Engineering at the intersection of silicon, signal, and sky.
+                        </p>
+                    </div>
+                </div>
+
+                <aside class="flex flex-col lg:col-span-5 border-t border-espresso lg:border-t-0 h-full justify-between">
+                    <dl class="border-b border-espresso bg-parchment">
+                        <div class="flex items-baseline justify-between gap-4 border-b border-espresso px-6 py-3.5">
+                            <dt class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">Location</dt>
+                            <dd class="text-right font-mono text-[13px] text-espresso">Chennai, India</dd>
+                        </div>
+                        <div class="flex items-baseline justify-between gap-4 border-b border-espresso px-6 py-3.5">
+                            <dt class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">Degree</dt>
+                            <dd class="text-right font-mono text-[13px] text-espresso">B.Tech ECE, VIT Chennai</dd>
+                        </div>
+                        <div class="flex items-baseline justify-between gap-4 border-b border-espresso px-6 py-3.5">
+                            <dt class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">CGPA</dt>
+                            <dd class="text-right font-mono text-[13px] text-espresso">9.2 / 10</dd>
+                        </div>
+                        <div class="flex items-baseline justify-between gap-4 border-b border-espresso px-6 py-3.5">
+                            <dt class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">Cohort</dt>
+                            <dd class="text-right font-mono text-[13px] text-espresso">2024 – 2028 (Currently Semester 5)</dd>
+                        </div>
+                        <a href="mailto:muhammadfadis248@gmail.com" class="flex items-baseline justify-between gap-4 border-b border-espresso px-6 py-3.5 cursor-pointer hover:bg-[var(--crimson)] group transition-all duration-200">
+                            <dt class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase group-hover:text-[var(--peach)]">Email</dt>
+                            <dd class="text-right font-mono text-[13px] text-espresso group-hover:text-[var(--peach)]">muhammadfadis248@gmail.com</dd>
+                        </a>
+                        <a href="https://github.com/fdicod" target="_blank" class="flex items-baseline justify-between gap-4 border-b border-espresso px-6 py-3.5 cursor-pointer hover:bg-[var(--crimson)] group transition-all duration-200">
+                            <dt class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase group-hover:text-[var(--peach)]">GitHub</dt>
+                            <dd class="text-right font-mono text-[13px] text-espresso group-hover:text-[var(--peach)]">github.com/fdicod</dd>
+                        </a>
+                        <a href="https://linkedin.com/in/muhammadfadis" target="_blank" class="flex items-baseline justify-between gap-4 border-b border-espresso px-6 py-3.5 cursor-pointer hover:bg-[var(--crimson)] group transition-all duration-200">
+                            <dt class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase group-hover:text-[var(--peach)]">LinkedIn</dt>
+                            <dd class="text-right font-mono text-[13px] text-espresso group-hover:text-[var(--peach)]">linkedin.com/in/muhammadfadis</dd>
+                        </a>
+                    </dl>
+
+                    <div class="relative w-full overflow-hidden bg-espresso border-t border-espresso aspect-[16/10] lg:flex-1 flex items-end">
+                        <img 
+                            src="Pics/CollegePic.jpg" 
+                            alt="A view outside my campus, Vellore Institute of Technology, Chennai." 
+                            onclick="openLightbox(this.src, this.alt)"
+                            class="w-full h-full object-cover duotone cursor-zoom-in" 
+                        />
+                        <span class="absolute bottom-5 left-4 px-2 py-1 font-mono text-[10px] font-bold tracking-[0.2em] text-parchment uppercase z-10 pointer-events-none">
+                            Where I spent most of my mornings looking at.
+                        </span>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <section id="skills" class="border-b-2 border-espresso">
+            <div class="grid grid-cols-1 border-b-2 border-espresso md:grid-cols-12 select-none">
+                <div class="border-espresso p-4 md:col-span-3 md:border-r-2 flex items-center">
+                    <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-espresso">Technical Identity</h2>
+                </div>
+                <div class="hidden border-espresso p-4 md:col-span-9 md:flex md:items-center md:justify-end">
+                    <span class="font-mono text-[10px] tracking-[0.15em] uppercase text-espresso/50">The toolkit</span>
+                </div>
+            </div>
+
+            <!-- 4-Column Uniform Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-espresso">
+                
+                <!-- Column 1 -->
+                <div class="p-6 sm:p-8 space-y-6">
+                    <div>
+                        <span class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase block">01 / Silicon</span>
+                        <h3 class="font-sans text-base font-extrabold text-espresso uppercase mt-1">EDA &amp; Logic</h3>
+                    </div>
+                    <ul class="font-mono text-xs space-y-2.5 text-espresso/85">
+                        <li class="border-b border-espresso/15 pb-2">Cadence Virtuoso, Genus, NCLaunch</li>
+                        <li class="border-b border-espresso/15 pb-2">Verilog HDL</li> 
+                        <li class="border-b border-espresso/15 pb-2">Quantus Prime, QRC</li>
+                    </ul>
+                </div>
+
+                <!-- Column 2 -->
+                <div class="p-6 sm:p-8 space-y-6 border-t sm:border-t-0 border-espresso">
+                    <div>
+                        <span class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase block">02 / Hardware</span>
+                        <h3 class="font-sans text-base font-extrabold text-espresso uppercase mt-1">Analog Design</h3>
+                    </div>
+                    <ul class="font-mono text-xs space-y-2.5 text-espresso/85">
+                        <li class="border-b border-espresso/15 pb-2">Op-Amps &amp; Oscillators</li>
+                        <li class="border-b border-espresso/15 pb-2">MATLAB</li>
+                        <li class="border-b border-espresso/15 pb-2">Filters, and Mosfets</li>
+                        <li class="border-b border-espresso/15 pb-2">Modulation Circuits</li>
+                    </ul>
+                </div>
+
+                <!-- Column 3 -->
+                <div class="p-6 sm:p-8 space-y-6 border-t lg:border-t-0 border-espresso">
+                    <div>
+                        <span class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase block">03 / Robotics</span>
+                        <h3 class="font-sans text-base font-extrabold text-espresso uppercase mt-1">Flight Avionics</h3>
+                    </div>
+                    <ul class="font-mono text-xs space-y-2.5 text-espresso/85">
+                        <li class="border-b border-espresso/15 pb-2">PX4 Autopilot</li>
+                        <li class="border-b border-espresso/15 pb-2">ArduPilot / Mission Planner</li>
+                        <li class="border-b border-espresso/15 pb-2">QGroundControl</li>
+                        <li class="border-b border-espresso/15 pb-2">Sensor Fusion (IMU)</li>
+                        <li class="border-b border-espresso/15 pb-2">FPV Drone Tuning</li>
+                    </ul>
+                </div>
+
+                <!-- Column 4 -->
+                <div class="p-6 sm:p-8 space-y-6 border-t lg:border-t-0 border-espresso">
+                    <div>
+                        <span class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase block">04 / Software</span>
+                        <h3 class="font-sans text-base font-extrabold text-espresso uppercase mt-1">Embedded and Coding</h3>
+                    </div>
+                    <ul class="font-mono text-xs space-y-2.5 text-espresso/85">
+                        <li class="border-b border-espresso/15 pb-2">Python &amp; Java</li>
+                        <li class="border-b border-espresso/15 pb-2">Arduino &amp; ESP32</li>
+                        <li class="border-b border-espresso/15 pb-2">RStudio</li>   
+                        <li class="border-b border-espresso/15 pb-2">8051 Assembly</li>
+                        <li class="border-b border-espresso/15 pb-2">Keil µVision</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Selected Works Section -->
+        <section id="projects" class="border-b-2 border-espresso">
+            <div class="grid grid-cols-1 border-b-2 border-espresso md:grid-cols-12 select-none">
+                <div class="border-espresso p-4 md:col-span-3 md:border-r-2 flex items-center">
+                    <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-espresso">Selected Works</h2>
+                </div>
+                <div class="hidden border-espresso p-4 md:col-span-9 md:flex md:items-center md:justify-end">
+                    <span class="font-mono text-[10px] tracking-[0.15em] uppercase text-espresso/50">2025 — 2026</span>
+                </div>
+            </div>
+
+            <!-- New Project 01 -->
+            <a href="Works/ctle-equalizer.html" class="project-link block">
+                <article class="grid grid-cols-1 border-b-2 border-espresso lg:grid-cols-12">
+                    <div class="flex items-start justify-between border-b border-espresso p-6 lg:col-span-2 lg:flex-col lg:border-r lg:border-b-0">
+                        <span class="font-sans text-[56px] font-black leading-none text-espresso">01</span>
+                        <span class="font-mono text-[11px] font-bold tracking-[0.2em] text-crimson uppercase">Aug 2026</span>
+                    </div>
+                    <div class="relative overflow-hidden border-b border-espresso bg-espresso lg:col-span-3 lg:border-r lg:border-b-0">
+                        <img src="Pics/Eye_Diagram_Orth.png" alt="Continuous Time Linear Equalizer " class="h-full w-full min-h-56 object-cover duotone" />
+                    </div>
+                    <div class="project-middle border-b border-espresso p-6 sm:p-8 lg:col-span-5 lg:border-r lg:border-b-0">
+                        <h3 class="font-sans text-2xl font-extrabold text-espresso leading-tight flex items-center gap-2">
+                            <span>Continuous Time Linear Equalizer For 12.5Gb/s</span>
+                            <span class="project-arrow inline-block font-mono text-crimson" aria-hidden="true">→</span>
+                        </h3>
+                        <p class="mt-4 text-[15px] leading-relaxed text-espresso/80">
+                            Designed and simulated a two-stage CTLE in 45nm technology, to improve Inter Symbol Interference in high speed links involving orthogonal and traditional backplanes.
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-2">
+                            <span class="inline-block px-3 py-1.5 font-mono text-[11px] font-bold tracking-[0.1em] uppercase bg-crimson text-parchment">Cadence Virtuoso</span>
+                            <span class="inline-block px-3 py-1.5 font-mono text-[11px] font-bold tracking-[0.1em] uppercase bg-crimson text-parchment">Analog IC</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center p-6 sm:p-8 lg:col-span-2 lg:items-end lg:text-right">
+                        <span class="font-sans text-[clamp(28px,4vw,40px)] font-black leading-none text-crimson">~10 dB</span>
+                        <span class="mt-3 font-mono text-[10px] font-bold tracking-[0.2em] text-espresso uppercase lg:max-w-[140px]">Peaking Gain</span>
+                    </div>
+                </article>
+            </a>
+
+            <!-- Project 02 (Pushed Down) -->
+            <a href="Works/vlsi-array-multiplier.html" class="project-link block">
+                <article class="grid grid-cols-1 border-b-2 border-espresso lg:grid-cols-12">
+                    <div class="flex items-start justify-between border-b border-espresso p-6 lg:col-span-2 lg:flex-col lg:border-r lg:border-b-0">
+                        <span class="font-sans text-[56px] font-black leading-none text-espresso">02</span>
+                        <span class="font-mono text-[11px] font-bold tracking-[0.2em] text-crimson uppercase">Mar 2026</span>
+                    </div>
+                    <div class="relative overflow-hidden border-b border-espresso bg-espresso lg:col-span-3 lg:border-r lg:border-b-0">
+                        <img src="Pics/FAlayout.png" alt="4×4 Array Multiplier With Hybrid TGL Logic" class="h-full w-full min-h-56 object-cover duotone" />
+                    </div>
+                    <div class="project-middle border-b border-espresso p-6 sm:p-8 lg:col-span-5 lg:border-r lg:border-b-0">
+                        <h3 class="font-sans text-2xl font-extrabold text-espresso leading-tight flex items-center gap-2">
+                            <span>4×4 Array Multiplier With Hybrid TGL Logic</span>
+                            <span class="project-arrow inline-block font-mono text-crimson" aria-hidden="true">→</span>
+                        </h3>
+                        <p class="mt-4 text-[15px] leading-relaxed text-espresso/80">
+                            Designed the schematic, layout, and post-layout simulations in Cadence Virtuoso using hybrid Transmission Gate Logic. Improved area efficiency and propagation delay by reducing Full Adder transistor count from 28T to 18T, and overall transistor count from 392T to 292T.
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-2">
+                            <span class="inline-block px-3 py-1.5 font-mono text-[11px] font-bold tracking-[0.1em] uppercase bg-crimson text-parchment">EDA & Logic</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center p-6 sm:p-8 lg:col-span-2 lg:items-end lg:text-right">
+                        <span class="font-sans text-[clamp(28px,4vw,40px)] font-black leading-none text-crimson">−25%</span>
+                        <span class="mt-3 font-mono text-[10px] font-bold tracking-[0.2em] text-espresso uppercase lg:max-w-[140px]">Transistor count vs CMOS</span>
+                    </div>
+                </article>
+            </a>
+
+            <!-- Project 03 (Pushed Down) -->
+            <a href="projects/hotspot-detection.html" class="project-link block">
+                <article class="grid grid-cols-1 lg:grid-cols-12 last:border-b-0">
+                    <div class="flex items-start justify-between border-b border-espresso p-6 lg:col-span-2 lg:flex-col lg:border-r lg:border-b-0">
+                        <span class="font-sans text-[56px] font-black leading-none text-espresso">03</span>
+                        <span class="font-mono text-[11px] font-bold tracking-[0.2em] text-crimson uppercase">Nov 2025</span>
+                    </div>
+                    <div class="relative overflow-hidden border-b border-espresso bg-espresso lg:col-span-3 lg:border-r lg:border-b-0">
+                        <img src="Pics/VCOover.jpeg" alt="Probabilistic Hotspot Detection" class="h-full w-full min-h-56 object-cover duotone" />
+                    </div>
+                    <div class="project-middle border-b border-espresso p-6 sm:p-8 lg:col-span-5 lg:border-r lg:border-b-0">
+                        <h3 class="font-sans text-2xl font-extrabold text-espresso leading-tight flex items-center gap-2">
+                            <span>Analog VCO with 4-step Sequencer</span>
+                            <span class="project-arrow inline-block font-mono text-crimson" aria-hidden="true">→</span>
+                        </h3>
+                        <p class="mt-4 text-[15px] leading-relaxed text-espresso/80">
+                            Designed a Voltage Controlled Oscillator using a CD40106 Schmitt-trigger with thermally coupled PNP-NPN exponential control stage. Built a 4-step voltage sequencer using a 555 Timer IC.
+                        </p>
+                        <div class="mt-6 flex flex-wrap gap-2">
+                            <span class="inline-block px-3 py-1.5 font-mono text-[11px] font-bold tracking-[0.1em] uppercase bg-crimson text-peach">Analog Design</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center p-6 sm:p-8 lg:col-span-2 lg:items-end lg:text-right">
+                        <span class="font-sans text-[clamp(28px,4vw,40px)] font-black leading-none text-crimson">7.12 kHz</span>
+                        <span class="mt-3 font-mono text-[10px] font-bold tracking-[0.2em] text-espresso uppercase lg:max-w-[140px]">Sequencer Output Frequency</span>
+                    </div>
+                </article>
+            </a>
+        </section>
+
+        <section id="experience" class="border-b-2 border-espresso">
+            <div class="grid grid-cols-1 border-b-2 border-espresso md:grid-cols-12 select-none">
+                <div class="border-espresso p-4 md:col-span-3 md:border-r-2 flex items-center">
+                    <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-espresso">Field Deployments</h2>
+                </div>
+                <div class="hidden border-espresso p-4 md:col-span-9 md:flex md:items-center md:justify-end">
+                    <span class="font-mono text-[10px] tracking-[0.15em] uppercase text-espresso/50">Where it ran</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12">
+                <div class="border-espresso lg:col-span-7 lg:border-r-2">
+                    <div class="border-b border-espresso p-6 sm:p-10">
+                        <p class="font-mono text-[11px] font-bold tracking-[0.25em] text-crimson uppercase">Jun 2026 – Jul 2026</p>
+                        <h3 class="mt-3 font-sans text-2xl font-extrabold text-espresso">Industrial Trainee</h3>
+                        <p class="mt-1 text-[15px] text-espresso/70">Times Microwave Systems, Electronic City, Bangalore</p>
+                    </div>
+
+                    <ul>
+                        <li class="flex gap-4 border-b border-espresso p-6 sm:px-10">
+                            <span class="font-sans text-lg font-black text-crimson" aria-hidden="true">→</span>
+                            <p class="text-[15px] leading-relaxed text-espresso/85">Gained hands-on experience in the modular manufacturing lifecycle of high-reliability RF and microwave cables, including precision cutting, laser stripping, braid loosening, flux application, and contact soldering, following strict Connector Assembly Procedures (CAP).</p>
+                        </li>
+                        <li class="flex gap-4 border-b border-espresso p-6 sm:px-10">
+                            <span class="font-sans text-lg font-black text-crimson" aria-hidden="true">→</span>
+                            <p class="text-[15px] leading-relaxed text-espresso/85">Participated in thermal cycling processes (+130°C to +150°C hot, −40°C cold) to stress-relieve coaxial cables and performed precise electrical length (EL) and TDR (Time Domain Reflectometry) matching to eliminate phase variations in specialized cable assemblies.</p>
+                        </li>
+                        <li class="flex gap-4 border-b border-espresso p-6 sm:px-10">
+                            <span class="font-sans text-lg font-black text-crimson" aria-hidden="true">→</span>
+                            <p class="text-[15px] leading-relaxed text-espresso/85">Gained exposure with Vector Network Analysers (VNAs) up to 52 GHz to evaluate key electrical parameters such as insertion loss, return loss (S₁₁ and S₂₂) and phase matching, ensuring compliance with strict frequency specifications.</p>
+                        </li>
+                       <li class="flex gap-4 border-b border-espresso p-6 sm:px-10">
+                            <span class="font-sans text-lg font-black text-crimson" aria-hidden="true">→</span>
+                            <p class="text-[15px] leading-relaxed text-espresso/85">Observed implementation of quality control measures using ISO 2859 sampling plans, inspecting assemblies for dimensional accuracy, dielectric gaps, and high-voltage breakdown limits using High-Power (Hi-Po) testing.</p>
+                        </li>
+                    </ul>
+
+<div class="relative border-b border-espresso bg-espresso">
+                        <div class="grid grid-cols-1 sm:grid-cols-3">
+                            <div class="relative overflow-hidden aspect-[4/3] border-b sm:border-b-0 sm:border-r border-espresso group cursor-zoom-in" onclick="openLightbox(this.querySelector('img').src, this.querySelector('img').alt)">
+                                <div class="absolute inset-0 bg-black/40 pointer-events-none z-10"></div>
+                                <img src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/The_Bench1.png" alt="Searching for that one obsolete capacitor." class="h-full w-full object-cover duotone transition-transform duration-400 group-hover:scale-105" />
+                            </div>
+                            <div class="relative overflow-hidden aspect-[4/3] border-b sm:border-b-0 sm:border-r border-espresso group cursor-zoom-in" onclick="openLightbox(this.querySelector('img').src, this.querySelector('img').alt)">
+                                <div class="absolute inset-0 bg-black/40 pointer-events-none z-10"></div>
+                                <img src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/The_Bench2.png" alt="A Weapon of Mass Destruction, and a Hot Air Rework Station." class="h-full w-full object-cover duotone transition-transform duration-400 group-hover:scale-105" />
+                            </div>
+                            <div class="relative overflow-hidden aspect-[4/3] group cursor-zoom-in" onclick="openLightbox(this.querySelector('img').src, this.querySelector('img').alt)">
+                                <div class="absolute inset-0 bg-black/40 pointer-events-none z-10"></div>
+                                <img src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/The_Bench3.png" alt="This is probably the last time I'm gonna work with a breadboard." class="h-full w-full object-cover duotone transition-transform duration-400 group-hover:scale-105" />
+                            </div>
+                        </div>
+                        <span class="absolute bottom-4 left-4 bg-espresso px-2 py-1 font-mono text-[10px] font-bold tracking-[0.2em] text-peach uppercase pointer-events-none z-20">The bench</span>
+                    </div>
+
+                    <div class="border-b border-espresso p-6 sm:p-10">
+                        <p class="font-mono text-[11px] font-bold tracking-[0.25em] text-crimson uppercase">Apr 2025 – Present</p>
+                        <h3 class="mt-3 font-sans text-2xl font-extrabold text-espresso">Avionics Member</h3>
+                        <p class="mt-1 text-[15px] text-espresso/70">Team Aviators International, College Drone Team</p>
+                    </div>
+
+                    <ul>
+                        <li class="flex gap-4 border-b border-espresso p-6 sm:px-10">
+                            <span class="font-sans text-lg font-black text-crimson" aria-hidden="true">→</span>
+                            <p class="text-[15px] leading-relaxed text-espresso/85">SAE ISS DDC 2026: Led component selection for power, payload, and endurance. Placed 3rd out of 45 teams nationally.</p>
+                        </li>
+                        <li class="flex gap-4 border-b border-espresso p-6 sm:px-10">
+                            <span class="font-sans text-lg font-black text-crimson" aria-hidden="true">→</span>
+                            <p class="text-[15px] leading-relaxed text-espresso/85">Dronetrix, IIST Trivandrum (Conscientia 2025): Placed 4th out of 17 national teams. Designed, calibrated, and assembled two high-velocity FPV racing drones.</p>
+                        </li>
+                        <li class="flex gap-4 border-b border-espresso p-6 last:border-b-0 sm:px-10">
+                            <span class="font-sans text-lg font-black text-crimson" aria-hidden="true">→</span>
+                            <p class="text-[15px] leading-relaxed text-espresso/85">Tools: QGroundControl, Mission Planner, PX4, ArduPilot. Applied thrust-to-weight ratio calculations.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="lg:col-span-5">
+                    <div class="border-b border-espresso p-6 sm:p-8">
+                        <p class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">Branch Topper</p>
+                        <p class="mt-2 font-sans text-2xl font-extrabold text-espresso">1st Year</p>
+                        <p class="mt-2 text-[14px] leading-relaxed text-espresso/75">2024–25, B.Tech ECE, VIT Chennai.</p>
+                    </div>
+                    <div class="border-b border-espresso p-6 sm:p-8">
+                        <p class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">SAE ISS DDC 2026</p>
+                        <p class="mt-2 font-sans text-2xl font-extrabold text-espresso">3rd / 45 Teams</p>
+                        <p class="mt-2 text-[14px] leading-relaxed text-espresso/75">Drone Design Challenge, national finals.</p>
+                    </div>
+                    <div class="border-b border-espresso p-6 sm:p-8">
+                        <p class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">Dronetrix 2025</p>
+                        <p class="mt-2 font-sans text-2xl font-extrabold text-espresso">4th / 17 Teams</p>
+                        <p class="mt-2 text-[14px] leading-relaxed text-espresso/75">IIST Trivandrum, Conscientia FPV racing.</p>
+                    </div>
+                    <div class="border-b border-espresso p-6 sm:p-8">
+                        <p class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">SIH 2025 Finalist</p>
+                        <p class="mt-2 font-sans text-2xl font-extrabold text-espresso">Top of 800+</p>
+                        <p class="mt-2 text-[14px] leading-relaxed text-espresso/75">Selected from 800+ college teams, 24-hour hackathon.</p>
+                    </div>
+                    <div class="p-6 sm:p-8">
+                        <p class="font-mono text-[10px] font-bold tracking-[0.25em] text-crimson uppercase">R.I.C.E. Selected</p>
+                        <p class="mt-2 font-sans text-2xl font-extrabold text-espresso">50+ Teams</p>
+                        <p class="mt-2 text-[14px] leading-relaxed text-espresso/75">Remote Industrial Collaboration Engine: VR-based CAD prototyping platform, 2024.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="border-b-2 border-espresso">
+            <div class="grid grid-cols-1 border-b-2 border-espresso md:grid-cols-12 select-none">
+                <div class="border-espresso p-4 md:col-span-3 md:border-r-2 flex items-center">
+                    <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-espresso">Philosophy</h2>
+                </div>
+                <div class="hidden border-espresso p-4 md:col-span-9 md:flex md:items-center md:justify-end">
+                    <span class="font-mono text-[10px] tracking-[0.15em] uppercase text-espresso/50">The intent</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-center p-6 sm:p-10 lg:p-14">
+                <p class="max-w-4xl font-sans text-[clamp(18px,2.4vw,26px)] font-medium leading-snug text-espresso text-pretty">
+                  I have always been drawn towards things that punish approximation, and lethargy, despite being a couch potato. The way I see it, a problem is only as daunting as it is misunderstood. If you're able to get past the academic rigamarole, you've already solved half the problem. I also believe that you don't need to be a scalpel to learn;   a dull blade still gets through if you're willing to push!
+                </p>
+            </div>
+            
+        </section>
+
+        <section id="contact" class="bg-espresso text-parchment py-10 px-6 sm:px-10 lg:px-14 border-t-2 border-espresso">
+            <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-xs tracking-wider">
+                <div class="flex items-center gap-2"></div>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="mailto:muhammadfadis248@gmail.com" class="hover:text-peach underline">Email</a>
+                    <a href="https://github.com/fdicod" target="_blank" class="hover:text-peach underline">GitHub</a>
+                    <a href="https://linkedin.com/in/muhammadfadis" target="_blank" class="hover:text-peach underline">LinkedIn</a>
+                </div>
+                <p class="text-parchment/40 text-[10px] uppercase tracking-widest text-center sm:text-right">
+                    &copy; 2026 Muhammad Fadi S.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+<!-- Lightbox Modal Container -->
+    <div 
+        id="lightbox-modal" 
+        onclick="handleBackdropClick(event)"
+        class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-8"
+        role="dialog" 
+        aria-modal="true"
+    >
+        <button 
+            type="button" 
+            onclick="closeLightbox()" 
+            class="absolute top-5 right-5 text-neutral-400 hover:text-white p-2 rounded-full hover:bg-neutral-800 focus:outline-none transition-colors cursor-pointer"
+            aria-label="Close image modal"
+        >
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <div class="relative max-w-6xl max-h-[85vh] flex flex-col items-center">
+            <img 
+                id="lightbox-img" 
+                src="" 
+                alt="" 
+                class="max-w-full max-h-[75vh] w-auto h-auto object-contain rounded shadow-2xl border border-neutral-700" 
+            />
+            <p id="lightbox-caption" class="mt-4 font-mono text-xs text-neutral-300 tracking-wider text-center max-w-2xl px-4"></p>
+        </div>
+    </div>
+
+    <!-- Script Block -->
+    <script>
+        // Modal / Lightbox Functions
+        const modal = document.getElementById('lightbox-modal');
+        const modalImg = document.getElementById('lightbox-img');
+        const modalCaption = document.getElementById('lightbox-caption');
+
+        function openLightbox(src, alt) {
+            modalImg.src = src;
+            modalImg.alt = alt;
+            modalCaption.textContent = alt;
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            document.addEventListener('keydown', handleEscKey);
+        }
+
+        function closeLightbox() {
+            modal.classList.add('hidden');
+            modalImg.src = '';
+            document.body.classList.remove('overflow-hidden');
+            document.removeEventListener('keydown', handleEscKey);
+        }
+
+        function handleBackdropClick(event) {
+            if (event.target === modal) {
+                closeLightbox();
+            }
+        }
+
+        function handleEscKey(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        }
+
+        function toggleMenu() {
+            const nav = document.getElementById('mobile-nav');
+            const btn = document.getElementById('menu-btn');
+            if (nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                btn.textContent = 'Close';
+            } else {
+                nav.classList.add('hidden');
+                btn.textContent = 'Menu';
+            }
+        }
+    </script>
+</body>
+</html>

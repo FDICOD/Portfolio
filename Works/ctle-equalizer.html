@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>45nm CTLE for a 12.5 Gb/s SerDes Link — Muhammad Fadi S</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        :root {
+            --parchment: #f4f1ea;
+            --espresso: #1a0f0a;
+            --crimson: #a91d22;
+            --peach: #fbcbbb; 
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--espresso);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .bg-parchment { background-color: var(--parchment); }
+        .bg-espresso { background-color: var(--espresso); }
+        .bg-crimson { background-color: var(--crimson); }
+        .bg-peach { background-color: var(--peach); }
+        
+        .border-espresso { border-color: var(--espresso); }
+        .text-espresso { color: var(--espresso); }
+        .text-crimson { color: var(--crimson); }
+        .text-parchment { color: var(--parchment); }
+        .text-peach { color: var(--peach); }
+
+        a, button {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .duotone {
+            transition: all 0.3s ease;
+        }
+        .duotone:hover {
+            opacity: 0.95;
+        }
+
+        table.spec-table th, table.spec-table td {
+            border: 1px solid rgba(26, 15, 10, 0.2);
+            padding: 8px 12px;
+            text-align: left;
+        }
+        table.spec-table th {
+            background-color: rgba(26, 15, 10, 0.05);
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-parchment text-espresso select-text">
+
+    <!-- Top Minimal Bar -->
+    <header class="sticky top-0 z-40 border-b-2 border-espresso bg-parchment">
+        <div class="max-w-7xl mx-auto flex items-stretch justify-between px-6 sm:px-12">
+            <a 
+                href="../index.html#projects" 
+                class="flex items-center py-4 font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-crimson hover:underline"
+            >
+                ← Go Back
+            </a>
+            <span class="flex items-center font-mono text-[11px] tracking-[0.15em] uppercase text-espresso/50">
+                02 / Selected Work
+            </span>
+        </div>
+    </header>
+
+<!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-12 py-12 sm:py-16 space-y-16 bg-parchment">
+        
+        <!-- Header & Quick Metadata -->
+        <section class="space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <h1 class="font-sans font-black tracking-tight text-espresso uppercase text-[clamp(36px,5.5vw,68px)] leading-[1.02]">
+                    45nm CTLE for a 12.5 Gb/s SerDes Link
+                </h1>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <span class="status-pill bg-peach text-espresso font-mono uppercase font-bold">CTLE Complete · DFE In Progress</span>
+                <a 
+                    href="https://github.com/FDICOD/CTLE_Design_45nm" 
+                    target="_blank" 
+                    class="font-mono text-xs font-bold uppercase tracking-wider text-espresso hover:text-crimson transition-colors flex items-center gap-1.5"
+                >
+                    <span>Github Repository</span>
+                    <span>→</span>
+                </a>
+            </div>
+            <p class="max-w-4xl text-[18px] leading-relaxed text-espresso/80 font-normal pt-2">
+                A transistor-level continuous-time linear equalizer, designed from first principles in Cadence Virtuoso and tested against two real, industry-sourced backplane channel models, one of which it fixed, and one of which it made measurably worse, in a way that turned out to be the most interesting part of the project!
+            </p>
+
+            <!-- Inline Meta Row -->
+            <div class="pt-6 border-t border-espresso/20 grid grid-cols-2 sm:grid-cols-4 gap-6 font-mono text-xs">
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Data Rate</span>
+                    <span class="font-bold text-base text-espresso">12.5 Gb/s NRZ</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Topology</span>
+                    <span class="font-bold text-base text-espresso">2-Stage Cascaded CTLE</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Verification</span>
+                    <span class="font-bold text-base text-espresso">AC + Transient Eye Diagram</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Process</span>
+                    <span class="font-bold text-base text-espresso">45nm CMOS</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Primary Hero Visual: Top-Level Schematic -->
+        <section class="space-y-3 flex flex-col items-center">
+            <img 
+                src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/CTLE_Final_Schematic.png" 
+                alt="Two-stage cascaded CTLE schematic in Cadence Virtuoso, source and capacitive degenerated differential pairs" 
+                onclick="openLightbox(this.src, this.alt)"
+                class="block max-h-[520px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+            />
+            <p class="w-full font-mono text-[11px] text-espresso/60 tracking-wide text-center">
+                Fig 1. Two-stage cascaded CTLE, source and capacitive degenerated differential pairs, 45nm CMOS.
+            </p>
+        </section>
+
+        <!-- Context & Objective -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Context &amp; Objective</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    This project began with a deep dive into differential pairs, and from there into differential signaling, current sources, and active loads. Somewhere along the way I got pulled toward the CTLE, partly for the eye diagrams, partly for everything underneath them. I picked an arbitrary Nyquist rate of 6.25 GHz, close to today's standards, putting the data rate at 12.5 Gb/s.
+
+At this rate, a backplane channel doesn't pass a signal so much as interrogate it. Skin effect, dielectric loss, and impedance discontinuities strip away all the high-frequency content that carries bit transitions, closing the eye before a CDR ever samples it. A CTLE sits at the receiver's front end and does the opposite: it boosts back what the channel took away!
+                </p>
+                <p>
+                    The design outlined above followed the methodology of Ankit Jain's UIUC thesis on 65nm equalizer design, supported by the math from Sam Palermo's Lectures on High-Speed Links. For the project, I adapted to 45nm technology and to real, publicly available 12.5 Gb/s backplane channel models.
+                </p>
+            </div>
+        </section>
+
+        <!-- Channel Section -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">The Channel</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    Rather than design against a textbook low-pass model, I sourced real 4-port S-parameter data from a public IEEE 802.3ck contribution: two 12-inch, Megtron-7 backplane channels, identical in length and dielectric, differing only in connector architecture. One uses a traditional, non-backdrilled via structure. The other uses a Direct-Plug Orthogonal connector.
+                </p>
+                <p>
+                    Parsing the Touchstone files and converting to differential insertion loss (SDD21) in Python revealed something the datasheet loss figure alone does not: both channels attenuate by almost exactly the same amount at 6.25 GHz Nyquist, roughly 10 dB. But the traditional channel's loss curve is dominated by via-stub resonance, deep periodic notches reaching −42 dB, averaging nearly 8 dB of ripple across the band. The orthogonal channel's curve, by contrast, is almost perfectly smooth, averaging just 0.03 dB of ripple over the same range. This is when the "weird" of the project started kicking in. Both had about the same loss, but wildly different shapes!
+                </p>
+            </div>
+        </section>
+
+<!-- Channel Section Image Comparison -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div class="flex flex-col items-center space-y-3">
+                <img 
+                    src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/15dB_Attempt_Orth.png" 
+                    alt="Insertion loss and return loss for the Orthogonal connector channel model" 
+                    onclick="openLightbox(this.src, this.alt)"
+                    class="block max-h-[360px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                />
+                <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                    Orthogonal Connector Channel (Smooth Response)
+                </span>
+            </div>
+            <div class="flex flex-col items-center space-y-3">
+                <img 
+                    src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/15dB_Attempt_Trad.png" 
+                    alt="Insertion loss showing deep via-stub resonance notches for the Traditional channel model" 
+                    onclick="openLightbox(this.src, this.alt)"
+                    class="block max-h-[360px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                />
+                <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                    Traditional Connector Channel (Resonance-Heavy)
+                </span>
+            </div>
+        </section>
+
+        <!-- Design Process -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Sizing Against Real Silicon</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    The classic square-law hand calculation for transconductance, gm = 2·Id/Vov, is a long-channel approximation. At 45nm, it overestimates gm by roughly 40% against what the transistor actually delivers. Rather than carry that error through the whole design, I characterized the real device directly: a DC sweep in Virtuoso, gm/Id and current density extracted at a chosen moderate-inversion operating point, and every downstream calculation built from that measured data instead of an idealized formula.
+                </p>
+                <p>
+                    Even with real device data, the ideal peaking-gain equation, gain approaching gm*RL, consistently overshot what the simulator actually produced. Tracing the gap down to its source revealed two physical effects the textbook formula omits: finite transistor output resistance (Ro) loading down the effective load, and body effect acting as an unaccounted second degeneration path. A single stage topped out around 6 dB of peaking gain against an ideal target of 9 to 11. The fix, precedented directly in a second thesis on 45nm video-rate equalizers, was to cascade two identical stages rather than force one stage past its real physical ceiling. Initially, I had started with the traditional backplane, and hence arrived at a gain of around +9.0018 dB, but because of what I would find out later, I decided to switch to orthogonal backplane channel, with a gain of +10.149 dB. 
+                </p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div class="flex flex-col items-center space-y-3">
+                <img 
+                    src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/CTLE_Final_Gain.png" 
+                    alt="Simulated AC differential gain response, two-stage cascade" 
+                    onclick="openLightbox(this.src, this.alt)"
+                    class="block max-h-[300px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                />
+                <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                    Simulated AC Response, Two-Stage Cascade
+                </span>
+            </div>
+            <div class="flex flex-col items-center space-y-3">
+                <img 
+                    src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/CTLE_DC_OP_Sweep.png" 
+                    alt="gm over Id characterization sweep used for transistor sizing" 
+                    onclick="openLightbox(this.src, this.alt)"
+                    class="block max-h-[300px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                />
+                <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                    gm/Id Sweep Used for Transistor Sizing
+                </span>
+            </div>
+        </section>
+
+        <!-- Results Table -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Proving It — Both Ways</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    A bode plot that peaks in the right place is not proof an equalizer works. The real test is a transient simulation: a PRBS bitstream driven through the actual channel S-parameters, through the equalizer, and measured as an eye diagram. I ran the identical CTLE design against both channels and got two opposite answers.
+                </p>
+                <div class="overflow-x-auto pt-2">
+                    <table class="spec-table w-full text-sm font-mono">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Orthogonal, Pre → Post</th>
+                                <th>Traditional, Pre → Post</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Eye Height</td><td>−16.0 mV → <b>+96.3 mV</b></td><td>−124 mV → <b>−317 mV</b></td></tr>
+                            <tr><td>Eye Amplitude</td><td>176.6 mV → 339.7 mV</td><td>87.1 mV → 220.4 mV</td></tr>
+                            <tr><td>Eye S/N</td><td>2.75 → 4.19</td><td>1.24 → 1.23</td></tr>
+                            <tr><td>Rise Time</td><td>41.2 ps → 21.6 ps</td><td>21.9 ps → 13.0 ps</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-espresso/70 text-[15px] pt-2">
+                    On the orthogonal channel, the eye height crosses from negative, meaning the two logic levels statistically overlap, to a clean positive value: a closed link becomes an open one. On the traditional channel, gain and edge speed both improve by every individual metric, and the eye still ends up more closed than it started. Same circuit, nearly identical raw loss on both channels, but opposite outcomes!
+                </p>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div class="flex flex-col items-center space-y-3">
+                <img 
+                    src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/Eye_Diagram_Orth.png" 
+                    alt="Eye diagram, pre and post equalization, orthogonal low-resonance channel" 
+                    onclick="openLightbox(this.src, this.alt)"
+                    class="block max-h-[300px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                />
+                <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                    Eye Diagram — Orthogonal Channel (Open)
+                </span>
+            </div>
+            <div class="flex flex-col items-center space-y-3">
+                <img 
+                    src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/Eye_Diagram_Trad.png" 
+                    alt="Eye diagram, pre and post equalization, traditional resonance-heavy channel" 
+                    onclick="openLightbox(this.src, this.alt)"
+                    class="block max-h-[300px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+                />
+                <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                    Eye Diagram — Traditional Channel (Worse After Equalization)
+                </span>
+            </div>
+        </section>
+
+        <!-- Key Insights -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Key Insights</h2>
+            </div>
+            <div class="md:col-span-8 space-y-6">
+                <div>
+                    <h3 class="font-sans font-bold text-espresso text-lg">A Linear Equalizer Amplifies the Problem, Not Just the Signal</h3>
+                    <p class="mt-1 text-[15px] leading-relaxed text-espresso/80">
+                        The traditional channel's eye got worse, not just insufficiently better, after equalization. A CTLE boosts everything in its passband, including reflection-driven interference, not only the wanted signal. When a channel's closure comes from resonance rather than smooth attenuation, adding gain amplifies the interference right along with the data. That is not a tuning failure. It is the reason decision feedback equalizers, which act on decision history rather than on frequency content, exist as the next stage in a real receiver chain.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-sans font-bold text-espresso text-lg">Theory Will Only Take You So Far!</h3>
+                    <p class="mt-1 text-[15px] leading-relaxed text-espresso/80">
+                        Every ideal formula in this design, gm from square law, peak gain from gm times RL, needed correction once checked against simulated silicon. Output resistance, body effect, and pole proximity are not edge cases; they are the default behavior of a real 45nm device. The hand calculation's real job was never to be exact. It was to get close enough that a parametric sweep had something sensible to converge from.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-sans font-bold text-espresso text-lg">Trust the Simulator Over the Datasheet Number</h3>
+                    <p class="mt-1 text-[15px] leading-relaxed text-espresso/80">
+                        A cached, stale simulation once produced a falsely clean eye on the resonant channel, one that looked like good news and wasn't. Catching it meant reading the simulator's own log rather than trusting a plot that happened to look right. The corrected result held up the original, harder conclusion. In a field where a subtly wrong result looks exactly like a right one, the habit of re-verifying against the raw log is not optional.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next Phase -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">What's Next</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    The traditional channel's result is not a dead end, but a handoff. A decision feedback equalizer (DFE) corrects intersymbol interference based on what was actually just received, regardless of whether that interference came from attenuation or reflection. I am currently building a DFE aimed specifically at recovering the traditional channel's eye, to possibly try and open it.
+                </p>
+            </div>
+        </section>
+
+        <!-- Clean Bottom Navigation -->
+        <nav class="pt-8 border-t-2 border-espresso flex justify-between items-center font-mono text-xs tracking-wider">
+            <a 
+                href="../index.html#projects" 
+                onclick="if (history.length > 1) { history.back(); return false; }" 
+                class="text-crimson font-bold uppercase hover:underline"
+            >
+                ← All Projects
+            </a>
+            <a href="vlsi-array-multiplier.html" class="text-espresso font-bold uppercase hover:underline">
+                Next: 4x4 Hybrid Logic Array Multiplier →
+            </a>
+        </nav>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-espresso bg-espresso text-parchment py-8 px-6 font-mono text-xs tracking-wider">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-parchment/60">&copy; 2026 Muhammad Fadi S.</span>
+            <div class="flex gap-6">
+                <a href="mailto:muhammadfadis248@gmail.com" class="hover:text-peach underline">Email</a>
+                <a href="https://github.com/fdicod" target="_blank" class="hover:text-peach underline">GitHub</a>
+                <a href="https://linkedin.com/in/muhammadfadis" target="_blank" class="hover:text-peach underline">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fullscreen Dark Modal / Lightbox -->
+    <div 
+        id="lightbox-modal" 
+        onclick="handleBackdropClick(event)"
+        class="fixed inset-0 z-50 hidden bg-neutral-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 sm:p-8"
+        role="dialog" 
+        aria-modal="true"
+    >
+        <button 
+            type="button" 
+            onclick="closeLightbox()" 
+            class="absolute top-5 right-5 text-neutral-400 hover:text-white p-2 rounded-full hover:bg-neutral-800 focus:outline-none transition-colors"
+            aria-label="Close image modal"
+        >
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <div class="relative max-w-6xl max-h-[85vh] flex flex-col items-center">
+            <img 
+                id="lightbox-img" 
+                src="" 
+                alt="" 
+                class="max-w-full max-h-[75vh] w-auto h-auto object-contain rounded shadow-2xl border border-neutral-700" 
+            />
+            <p id="lightbox-caption" class="mt-4 font-mono text-xs text-neutral-300 tracking-wider text-center max-w-2xl px-4"></p>
+        </div>
+    </div>
+
+    <!-- Lightbox Logic -->
+    <script>
+        const modal = document.getElementById('lightbox-modal');
+        const modalImg = document.getElementById('lightbox-img');
+        const modalCaption = document.getElementById('lightbox-caption');
+
+        function openLightbox(src, alt) {
+            modalImg.src = src;
+            modalImg.alt = alt;
+            modalCaption.textContent = alt;
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            document.addEventListener('keydown', handleEscKey);
+        }
+
+        function closeLightbox() {
+            modal.classList.add('hidden');
+            modalImg.src = '';
+            document.body.classList.remove('modal-open');
+            document.removeEventListener('keydown', handleEscKey);
+        }
+
+        function handleBackdropClick(event) {
+            if (event.target === modal) {
+                closeLightbox();
+            }
+        }
+
+        function handleEscKey(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        }
+    </script>
+
+</body>
+</html>
