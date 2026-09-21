@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analog Schmitt-Trigger VCO with 4-Step Sequencer — Muhammad Fadi S</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        :root {
+            --parchment: #f4f1ea;
+            --espresso: #1a0f0a;
+            --crimson: #a91d22;
+            --peach: #fbcbbb; 
+        }
+
+        body {
+            background-color: var(--parchment);
+            color: var(--espresso);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .bg-parchment { background-color: var(--parchment); }
+        .bg-espresso { background-color: var(--espresso); }
+        .bg-crimson { background-color: var(--crimson); }
+        .bg-peach { background-color: var(--peach); }
+        
+        .border-espresso { border-color: var(--espresso); }
+        .text-espresso { color: var(--espresso); }
+        .text-crimson { color: var(--crimson); }
+        .text-parchment { color: var(--parchment); }
+        .text-peach { color: var(--peach); }
+
+        a, button {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .duotone {
+            transition: all 0.3s ease;
+        }
+        .duotone:hover {
+            opacity: 0.95;
+        }
+
+        table.spec-table th, table.spec-table td {
+            border: 1px solid rgba(26, 15, 10, 0.2);
+            padding: 8px 12px;
+            text-align: left;
+        }
+        table.spec-table th {
+            background-color: rgba(26, 15, 10, 0.05);
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-parchment text-espresso select-text">
+
+    <!-- Top Minimal Bar -->
+    <header class="sticky top-0 z-40 border-b-2 border-espresso bg-parchment">
+        <div class="max-w-7xl mx-auto flex items-stretch justify-between px-6 sm:px-12">
+            <a 
+                href="../index.html#projects" 
+                class="flex items-center py-4 font-mono text-[11px] font-bold tracking-[0.2em] uppercase text-crimson hover:underline"
+            >
+                ← Go Back
+            </a>
+            <span class="flex items-center font-mono text-[11px] tracking-[0.15em] uppercase text-espresso/50">
+                03 / Selected Work
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-6 sm:px-12 py-12 sm:py-16 space-y-16 bg-parchment">
+        
+        <!-- Header & Quick Metadata -->
+        <section class="space-y-6">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <h1 class="font-sans font-black tracking-tight text-espresso uppercase text-[clamp(36px,5.5vw,68px)] leading-[1.02]">
+                    Analog Schmitt-Trigger VCO with 4-Step Sequencer
+                </h1>
+            </div>
+            
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <span class="status-pill bg-peach text-espresso font-mono uppercase font-bold">VCO Core + Sequencer Complete</span>
+                <a 
+                    href="https://github.com/FDICOD" 
+                    target="_blank" 
+                    class="font-mono text-xs font-bold uppercase tracking-wider text-espresso hover:text-crimson transition-colors flex items-center gap-1.5"
+                >
+                    <span>Github Repository</span>
+                    <span>→</span>
+                </a>
+            </div>
+            <p class="max-w-4xl text-[18px] leading-relaxed text-espresso/80 font-normal pt-2">
+                A discrete, PNP/NPN-coupled Schmitt-trigger VCO built on breadboard, tuned to 7.12 kHz, and driven by a CD4017-based 4-step pitch sequencer. Being my very first foray into discrete analog electronics, I followed Moritz Klein's "Shapes VCO" methodology stage by stage, only without a datasheet handing me the component values, which turned out to be most of the actual work.
+            </p>
+
+            <!-- Inline Meta Row -->
+            <div class="pt-6 border-t border-espresso/20 grid grid-cols-2 sm:grid-cols-4 gap-6 font-mono text-xs">
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Tuning Point</span>
+                    <span class="font-bold text-base text-espresso">7.12 kHz</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Core Topology</span>
+                    <span class="font-bold text-base text-espresso">Schmitt-Trigger Relaxation Osc.</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Tracking Stage</span>
+                    <span class="font-bold text-base text-espresso">NPN Exponential + PNP/NTC Thermal</span>
+                </div>
+                <div>
+                    <span class="text-crimson uppercase tracking-wider text-[10px] block">Sequencing</span>
+                    <span class="font-bold text-base text-espresso">CD4017, 4-Step, 555 Clock</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Primary Hero Visual (KEPT as requested) -->
+        <section class="space-y-3 flex flex-col items-center">
+            <img 
+                src="../Pics/VCOover.jpeg" 
+                alt="Full breadboard build of the VCO and 4-step sequencer, top view" 
+                onclick="openLightbox(this.src, this.alt)"
+                class="block max-h-[520px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+            />
+            <p class="w-full font-mono text-[11px] text-espresso/60 tracking-wide text-center">
+                Fig 1. Full two-board breadboard build: The sequencer step pots on the left, oscillator core bottom right.
+            </p>
+        </section>
+
+        <!-- Context & Objective -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Context &amp; Objective</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    This project started as a project for my Analog Electronics coursework, but I knew from the start that I wanted to build a circuit using discrete components, and it had to make noise. I followed the build order of Moritz Klein's "Shapes VCO" video series almost exactly: get a Schmitt-trigger relaxation core oscillating first, replace its timing resistor with an NPN transistor to make the charge curve exponential (so control voltage maps onto pitch the way a real synth expects), buffer the output so downstream loading doesn't detune the core, then add a PNP transistor thermally coupled to an NTC thermistor so the exponential stage doesn't drift as it warms up.
+                </p>
+                <p>
+                    From there, I wanted the oscillator to actually do something musical rather than just sit on the bench holding one pitch, so I added a CD4017-based 4-step sequencer: a 555 timer clocks the decade counter, each of its first four outputs gates one of four potentiometers onto the VCO's CV input, and the result is a simple, repeating 4-note pattern with independently tunable steps.
+                </p>
+            </div>
+        </section>
+
+        <!-- Reference Schematic -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">The Reference Design</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    Adapting from Moritz Klein's "Shapes VCO" schematic, I built the circuit with the parts I actually had on hand. A common constraint in DIY synth building, where a supposedly simple substitution (a different transistor, a slightly different pot value) can quietly move your operating point. The core uses two TL074 op-amps, a diode network, and a 2.2nF timing capacitor feeding the Schmitt-trigger stage, with coarse, fine, CV, and FM pots each summing into the same timing node through their own resistor pairs.
+                </p>
+            </div>
+        </section>
+
+        <section class="flex flex-col items-center space-y-3">
+            <img 
+                src="/home/fadi/Fadi/College/Third Year/Projects/Portfolio/Pics/shapes.png" 
+                alt="Reference Shapes VCO schematic, Schmitt trigger core with op-amp shaping stages" 
+                onclick="openLightbox(this.src, this.alt)"
+                class="block max-h-[480px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in" 
+            />
+            <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                Fig 2. Reference schematic followed for the oscillator core (Moritz Klein, "Shapes VCO").
+            </span>
+        </section>
+
+        <!-- Component Estimation -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Sizing the Timing Network</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    The schematic fixes most values directly, but landing on a specific tuning frequency and sizing the sequencer's clock still meant working from first principles. A Schmitt-trigger relaxation oscillator's frequency follows roughly f ≈ 1 / (k·R·C), where k depends on the gate's switching thresholds relative to its supply, commonly cited between 0.7 and 1.4 for this device family, and varying chip to chip. With the schematic's 2.2nF timing cap, solving for R at the 7.12kHz target using the commonly-quoted average multiplier (k = 1.0) gives a best-estimate timing resistance of R = 1/(f·C) ≈ 63.8kΩ. Since the 100k coarse pot sits in series with a 10k fine trim (a 10k–110k total range), that puts the coarse pot at roughly 54kΩ, or about 54% of its rotation, with the fine trim making up the rest. The full 0.7–1.4 range for k puts realistic error bars of roughly 46kΩ to 91kΩ (about 42%–85% rotation) around that number, so ~63.8kΩ / ~54% rotation is the value to dial in first and trim from once on the bench.
+                </p>
+                <p>
+                    The 555-based sequencer clock wasn't specified anywhere in my own notes going in, so I sized it from the standard astable formula, f = 1.44 / ((R1 + 2·R2)·C), using a fixed 1k and 68k already in the sequencer's parts stock plus one of the spare 100k pots as a tempo control and an added ~1µF timing cap. That combination sweeps roughly 4.3 Hz to 10.5 Hz, comfortably in a usable step-sequencer range, while keeping duty cycle within a hair of 50% across the whole sweep.
+                </p>
+            </div>
+        </section>
+
+        <!-- Results / Proving it -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Proving It on Breadboard</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    Component shortages and a tight timeline meant I didn't build the full planned chain, and as such, the saw/pulse/triangle/sine shaping stage and a case-mounted final version are both still on the list. What is built and verified is the oscillator core, tuned and holding at its target point, and the 4-step sequencer walking it through an independently-tunable pitch pattern in real time, driven off two 9V batteries with no bench supply.
+                </p>
+                <div class="overflow-x-auto pt-2">
+                    <table class="spec-table w-full text-sm font-mono">
+                        <thead>
+                            <tr>
+                                <th>Stage</th>
+                                <th>Status</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Schmitt-trigger core</td><td><b>Working</b></td><td>Tuned to 7.12 kHz reference point</td></tr>
+                            <tr><td>NPN exponential converter</td><td><b>Working</b></td><td>CV tracking trimmed empirically</td></tr>
+                            <tr><td>PNP + NTC thermal comp.</td><td><b>Working</b></td><td>Reduces drift as the board warms up</td></tr>
+                            <tr><td>Output buffer</td><td><b>Working</b></td><td>Isolates timing node from load</td></tr>
+                            <tr><td>4-step sequencer (CD4017 + 555)</td><td><b>Working</b></td><td>4 independently-tunable CV steps</td></tr>
+                            <tr><td>Saw/pulse/triangle/sine shaping</td><td>Not yet built</td><td>Component shortage, time constraints</td></tr>
+                            <tr><td>Speaker output (LM386)</td><td>Not yet wired</td><td>Populated in BOM, unused this revision</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Centered Single Showcase Image (Removed left image, centered the right angled shot) -->
+        <section class="flex flex-col items-center space-y-3 pt-4">
+            <img 
+                src="../Pics/VCO_side.png" 
+                alt="Angled view of full breadboard build showing step potentiometers" 
+                onclick="openLightbox(this.src, this.alt)"
+                class="block max-h-[440px] max-w-full h-auto w-auto object-contain duotone cursor-zoom-in shadow-sm" 
+            />
+            <span class="font-mono text-[11px] text-espresso/60 uppercase tracking-wider block text-center">
+                Fig 3. 4-Step CV Potentiometers and Front Row Build View
+            </span>
+        </section>
+
+        <!-- Key Insights -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">Key Insights</h2>
+            </div>
+            <div class="md:col-span-8 space-y-6">
+                <div>
+                    <h3 class="font-sans font-bold text-espresso text-lg">A Schmitt-Trigger Oscillator Doesn't Have One Fixed Formula</h3>
+                    <p class="mt-1 text-[15px] leading-relaxed text-espresso/80">
+                        Gate hysteresis on CMOS Schmitt inverters varies enough, chip to chip and batch to batch, that any hand-calculated resistor value is a starting point rather than an answer. That is exactly why this whole family of circuit leans on coarse and fine pots instead of precision fixed resistors, and why the correct instinct once it's built is to verify with a scope, not to trust the math.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-sans font-bold text-espresso text-lg">Exponential Tracking Is a Calibration Problem, Not a Component Problem</h3>
+                    <p class="mt-1 text-[15px] leading-relaxed text-espresso/80">
+                        No resistor value on its own gets an exponential converter tracking cleanly. The 1k trimmer exists because the real fix is empirical: play a CV across a few octaves, adjust, repeat. The PNP/NTC thermal stage exists for the same reason in reverse, it keeps a good calibration from drifting away as the board warms up.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-sans font-bold text-espresso text-lg">A Partial Build Can Still Prove the Concept</h3>
+                    <p class="mt-1 text-[15px] leading-relaxed text-espresso/80">
+                        Skipping the full shape-generation chain left something smaller than originally planned, but it's a working, pitch-modulating oscillator that tracks a 4-step sequence in real time, which is enough to validate the design before finishing the rest.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Next Phase -->
+        <section class="grid grid-cols-1 md:grid-cols-12 gap-8 pt-8 border-t-2 border-espresso">
+            <div class="md:col-span-4">
+                <h2 class="font-mono text-xs font-bold tracking-[0.2em] uppercase text-crimson">What's Next</h2>
+            </div>
+            <div class="md:col-span-8 space-y-4 text-[16px] leading-relaxed text-espresso/85">
+                <p>
+                    Next up is populating the op-amp shaping stage from the reference schematic to get saw and pulse outputs alongside the existing waveform, wiring in the LM386 for a speaker output, and eventually moving the whole thing off breadboard onto stripboard once the full chain is verified end to end.
+                </p>
+            </div>
+        </section>
+
+        <!-- Clean Bottom Navigation -->
+        <nav class="pt-8 border-t-2 border-espresso flex justify-between items-center font-mono text-xs tracking-wider">
+            <a 
+                href="../index.html#projects" 
+                onclick="if (history.length > 1) { history.back(); return false; }" 
+                class="text-crimson font-bold uppercase hover:underline"
+            >
+                ← All Projects
+            </a>
+            <a href="../Works/ctle-equalizer.html" class="text-espresso font-bold uppercase hover:underline">
+                Go Back: 45nm CTLE for a 12.5 Gb/s SerDes Link →
+            </a>
+        </nav>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-espresso bg-espresso text-parchment py-8 px-6 font-mono text-xs tracking-wider">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="text-parchment/60">&copy; 2026 Muhammad Fadi S.</span>
+            <div class="flex gap-6">
+                <a href="mailto:muhammadfadis248@gmail.com" class="hover:text-peach underline">Email</a>
+                <a href="https://github.com/fdicod" target="_blank" class="hover:text-peach underline">GitHub</a>
+                <a href="https://linkedin.com/in/muhammadfadis" target="_blank" class="hover:text-peach underline">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fullscreen Dark Modal / Lightbox -->
+    <div 
+        id="lightbox-modal" 
+        onclick="handleBackdropClick(event)"
+        class="fixed inset-0 z-50 hidden bg-neutral-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 sm:p-8"
+        role="dialog" 
+        aria-modal="true"
+    >
+        <button 
+            type="button" 
+            onclick="closeLightbox()" 
+            class="absolute top-5 right-5 text-neutral-400 hover:text-white p-2 rounded-full hover:bg-neutral-800 focus:outline-none transition-colors"
+            aria-label="Close image modal"
+        >
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <div class="relative max-w-6xl max-h-[85vh] flex flex-col items-center">
+            <img 
+                id="lightbox-img" 
+                src="" 
+                alt="" 
+                class="max-w-full max-h-[75vh] w-auto h-auto object-contain rounded shadow-2xl border border-neutral-700" 
+            />
+            <p id="lightbox-caption" class="mt-4 font-mono text-xs text-neutral-300 tracking-wider text-center max-w-2xl px-4"></p>
+        </div>
+    </div>
+
+    <!-- Lightbox Logic -->
+    <script>
+        const modal = document.getElementById('lightbox-modal');
+        const modalImg = document.getElementById('lightbox-img');
+        const modalCaption = document.getElementById('lightbox-caption');
+
+        function openLightbox(src, alt) {
+            modalImg.src = src;
+            modalImg.alt = alt;
+            modalCaption.textContent = alt;
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-open');
+            document.addEventListener('keydown', handleEscKey);
+        }
+
+        function closeLightbox() {
+            modal.classList.add('hidden');
+            modalImg.src = '';
+            document.body.classList.remove('modal-open');
+            document.removeEventListener('keydown', handleEscKey);
+        }
+
+        function handleBackdropClick(event) {
+            if (event.target === modal) {
+                closeLightbox();
+            }
+        }
+
+        function handleEscKey(event) {
+            if (event.key === 'Escape') {
+                closeLightbox();
+            }
+        }
+    </script>
+
+</body>
+</html>
